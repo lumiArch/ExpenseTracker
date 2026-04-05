@@ -24,6 +24,18 @@ const dbConfig = {
   queueLimit: 0
 };
 
+/**
+function formatExpense(row) {
+  return {
+    id: row.id,
+    title: row.title,
+    amount: parseFloat(row.amount),
+    category: row.category,
+    date: row.transactionDate,
+    notes: row.notes || ''
+  };
+} */
+
 let pool;
 
 // create the DB and table if missing, then open the connection pool
@@ -41,14 +53,14 @@ async function initDb() {
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS expenses (
-        id              INT AUTO_INCREMENT PRIMARY KEY,
-        title           VARCHAR(255)   NOT NULL,
-        amount          DECIMAL(10,2)  NOT NULL CHECK (amount >= 0),
-        category        VARCHAR(100)   NOT NULL,
-        transactionDate DATE           NOT NULL,
-        notes           TEXT,
-        created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        amount DECIMAL(10,2) NOT NULL CHECK (amount >= 0),
+        category VARCHAR(100) NOT NULL,
+        transactionDate DATE NOT NULL,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       ) ENGINE=InnoDB;
     `);
 
@@ -61,24 +73,24 @@ async function initDb() {
 
 // Routes
 
+// TODO: look into pagination if the list gets too long
 app.get('/api/expenses', async (req, res) => {
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM expenses ORDER BY transactionDate DESC, id DESC'
-    );
+    const [rows] = await pool.query('SELECT * FROM expenses ORDER BY transactionDate DESC, id DESC');
     res.json(rows);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: 'Failed to load expenses' });
   }
 });
 
 app.get('/api/expenses/:id', async (req, res) => {
-  const { id } = req.params;
   try {
-    const [rows] = await pool.query('SELECT * FROM expenses WHERE id = ?', [id]);
-    if (!rows.length) return res.status(404).json({ error: 'Expense not found' });
+    const [rows] = await pool.query('SELECT * FROM expenses WHERE id = ?', [req.params.id]);
+    if (!rows.length) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
     res.json(rows[0]);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: 'Failed to load expense' });
   }
 });
@@ -96,15 +108,16 @@ app.post('/api/expenses', async (req, res) => {
       'INSERT INTO expenses (title, amount, category, transactionDate, notes) VALUES (?, ?, ?, ?, ?)',
       [title.trim(), parseFloat(amount), category.trim(), transactionDate, notes ? notes.trim() : null]
     );
+    // console.log('inserted id:', result.insertId);
     const [rows] = await pool.query('SELECT * FROM expenses WHERE id = ?', [result.insertId]);
     res.status(201).json(rows[0]);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: 'Failed to create expense' });
   }
 });
 
 app.put('/api/expenses/:id', async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
   const { title, amount, category, transactionDate, notes } = req.body;
 
   if (!title || amount == null || !category || !transactionDate) {
@@ -117,22 +130,24 @@ app.put('/api/expenses/:id', async (req, res) => {
       [title.trim(), parseFloat(amount), category.trim(), transactionDate, notes ? notes.trim() : null, id]
     );
 
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Expense not found' });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
 
     const [rows] = await pool.query('SELECT * FROM expenses WHERE id = ?', [id]);
     res.json(rows[0]);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: 'Failed to update expense' });
   }
 });
 
 app.delete('/api/expenses/:id', async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
   try {
     const [result] = await pool.query('DELETE FROM expenses WHERE id = ?', [id]);
     if (result.affectedRows === 0) return res.status(404).json({ error: 'Expense not found' });
     res.json({ deleted: true });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: 'Failed to delete expense' });
   }
 });

@@ -1,16 +1,16 @@
 * { box-sizing: border-box; }
 /* Design tokens */
 :root {
-  --bg:             #f6f8fa;
-  --panel:          #ffffff;
-  --primary:        #2f76d2;
+  --bg: #f6f8fa;
+  --panel: #ffffff;
+  --primary: #2f76d2;
   --primary-strong: #1a4fa1;
-  --text:           #1a2233;
-  --muted:          #5a6b89;
-  --danger:         #d94a4a;
-  --danger-dark:    #a23232;
-  --border:         #d6dbe9;
-  --success:        #1a7a4a;
+  --text: #1a2233;
+  --muted: #5a6b89;
+  --danger: #d94a4a;
+  --danger-dark: #a23232;
+  --border: #d6dbe9;
+  --success: #1a7a4a;
 }
 
 /* Base */
@@ -208,12 +208,12 @@ tbody td {
 }
 
 /* per-category colours */
-.cat-food          { background: #fef3c7; color: #92400e; }
-.cat-transport     { background: #dbeafe; color: #1e40af; }
-.cat-utilities     { background: #d1fae5; color: #065f46; }
+.cat-food { background: #fef3c7; color: #92400e; }
+.cat-transport { background: #dbeafe; color: #1e40af; }
+.cat-utilities { background: #d1fae5; color: #065f46; }
 .cat-entertainment { background: #ede9fe; color: #4c1d95; }
-.cat-rent          { background: #fee2e2; color: #991b1b; }
-.cat-misc          { background: #f3f4f6; color: #374151; }
+.cat-rent { background: #fee2e2; color: #991b1b; }
+.cat-misc { background: #f3f4f6; color: #374151; }
 
 /* Insights panel */
 .insight-heading {

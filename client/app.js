@@ -1,5 +1,9 @@
 const API = '/api/expenses';
 
+/*
+const CATEGORIES = ['Food', 'Transport', 'Utilities', 'Entertainment', 'Rent', 'Misc']; 
+*/
+
 // local cache; all renders read from here
 const state = {
   expenses: [],
@@ -22,6 +26,16 @@ const escapeHtml = (str) => {
 // append T00:00:00 so MySQL's "YYYY-MM-DD" is parsed as local time, not UTC
 const parseLocalDate = (dateStr) => new Date(dateStr.slice(0, 10) + 'T00:00:00');
 
+/* 
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+*/
+
 const formatCurrency = (n) => `$${Number(n).toFixed(2)}`;
 
 // Notifications
@@ -36,7 +50,7 @@ const notifyError = (message) => {
 const notifySuccess = (message) => {
   const t = el('toast');
   t.textContent = message;
-  // remove then re-add to restart the CSS transition
+  // not sure why removing it first is needed but without this the animation doesnt retrigger
   t.classList.remove('toast-show');
   void t.offsetWidth;
   t.classList.add('toast-show');
@@ -52,12 +66,13 @@ const renderSummary = () => {
   el('totalCount').textContent = state.expenses.length;
 };
 
-const renderTable = () => {
+// TODO: add sorting when clicking column headers
+function renderTable() {
   const tbody = el('expenseTable').querySelector('tbody');
   const filterText = el('filterInput').value.trim().toLowerCase();
   tbody.innerHTML = '';
 
-  const filtered = state.expenses.filter((item) => {
+  let filtered = state.expenses.filter((item) => {
     if (!filterText) return true;
     return (
       item.title.toLowerCase().includes(filterText) ||
@@ -90,7 +105,7 @@ const renderTable = () => {
     `;
     tbody.appendChild(tr);
   });
-};
+}
 
 const renderInsights = () => {
   renderCategoryInsights();
@@ -215,6 +230,8 @@ const saveExpense = async (evt) => {
     transactionDate: el('transactionDate').value,
     notes: el('notes').value.trim()
   };
+
+  // console.log('saving:', payload);
 
   if (!payload.title || !payload.category || !payload.transactionDate || payload.amount <= 0) {
     notifyError('Title, category, date, and a positive amount are all required.');
