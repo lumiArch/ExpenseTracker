@@ -1,0 +1,346 @@
+* { box-sizing: border-box; }
+/* Design tokens */
+:root {
+  --bg:             #f6f8fa;
+  --panel:          #ffffff;
+  --primary:        #2f76d2;
+  --primary-strong: #1a4fa1;
+  --text:           #1a2233;
+  --muted:          #5a6b89;
+  --danger:         #d94a4a;
+  --danger-dark:    #a23232;
+  --border:         #d6dbe9;
+  --success:        #1a7a4a;
+}
+
+/* Base */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top left, #e8f1ff 0%, var(--bg) 100%);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* App shell */
+.app-shell {
+  max-width: 1024px;
+  margin: 1.25rem auto;
+  padding: 0 1rem 1rem;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
+}
+
+header p {
+  color: var(--muted);
+  margin: 0.4rem 0 1rem;
+}
+
+/* Panel card */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(26, 34, 51, 0.08);
+}
+
+/* panel section heading */
+.panel-title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Summary bar */
+.summary-item {
+  display: inline-block;
+  font-weight: 600;
+  margin-right: 1.35rem;
+}
+
+/* Form layout */
+form .form-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 140px) 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+form label {
+  color: var(--muted);
+}
+
+/* Inputs, selects, textareas */
+input, select, textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* focus ring for keyboard navigation */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(47, 118, 210, 0.2);
+}
+
+textarea { resize: vertical; }
+
+/* Form action buttons */
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+
+/* Buttons (shared) */
+button {
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+button:hover  { transform: translateY(-1px); filter: brightness(1.05); }
+button:active { transform: translateY(1px); }
+
+button:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button.secondary {
+  background: #e9ecf6;
+  color: var(--text);
+}
+
+button#submitButton {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Table action buttons */
+button.action-btn {
+  background: #eef3ff;
+  color: #1d3f7a;
+  min-width: 60px;
+  margin-right: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.875rem;
+}
+
+button.action-btn.danger,
+button.danger {
+  background: var(--danger);
+  color: white;
+}
+
+/* Table */
+.table-actions {
+  margin-bottom: 0.5rem;
+}
+
+#filterInput {
+  max-width: 260px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+thead th {
+  text-align: left;
+  padding: 0.6rem 0.45rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+tbody td {
+  padding: 0.55rem 0.45rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+/* muted notes column */
+.notes-cell {
+  color: var(--muted);
+  font-size: 0.875rem;
+  max-width: 200px;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 1.5rem 0;
+}
+
+/* Category badges */
+.cat-badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #e9ecf6;
+  color: var(--text);
+}
+
+/* per-category colours */
+.cat-food          { background: #fef3c7; color: #92400e; }
+.cat-transport     { background: #dbeafe; color: #1e40af; }
+.cat-utilities     { background: #d1fae5; color: #065f46; }
+.cat-entertainment { background: #ede9fe; color: #4c1d95; }
+.cat-rent          { background: #fee2e2; color: #991b1b; }
+.cat-misc          { background: #f3f4f6; color: #374151; }
+
+/* Insights panel */
+.insight-heading {
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* 2-col grid, stacks on mobile */
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* label | bar | value | count */
+.insight-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.insight-label {
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* grey track */
+.insight-bar-wrap {
+  height: 10px;
+  background: #e9ecf6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* filled bar */
+.insight-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* teal accent for monthly bars */
+.insight-bar-fill.monthly {
+  background: #0d9488;
+}
+
+.insight-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.insight-count {
+  font-size: 0.8rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.empty-insight {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Error banner */
+.error {
+  color: #941515;
+  background: #ffe6e6;
+  border: 1px solid #f2c2c2;
+  padding: 0.55rem 0.8rem;
+  border-radius: 6px;
+  margin-top: 0.7rem;
+}
+
+/* Success toast */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--success);
+  color: #fff;
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  opacity: 0; /* hidden by default */
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.toast.toast-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 680px) {
+  form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-item {
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* drop count column on small screens */
+  .insight-row {
+    grid-template-columns: 90px 1fr auto;
+  }
+
+  .insight-count {
+    display: none;
+  }
+}
