@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation — hidden until user signs in -->
+  <nav class="topnav" id="topNav" hidden>
+    <div class="nav-brand">
+      <span class="nav-title">Expense Tracker</span>
+      <span class="nav-subtitle">Monitor and categorize your spending</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user" id="navUser"></span>
+      <button class="nav-btn" id="navExpensesBtn">My Expenses</button>
+      <button class="nav-btn" id="navAdminBtn" hidden>Admin Panel</button>
+      <button class="nav-btn nav-logout" id="navLogoutBtn">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Login view -->
+  <div class="view" id="view-login">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <h1 class="auth-app-name">Expense Tracker</h1>
+        <h2 class="auth-title">Sign in</h2>
+        <div class="auth-error" id="loginError" hidden></div>
+        <form id="loginForm" novalidate>
+          <div class="form-row">
+            <label for="loginUsername">Username or email</label>
+            <input type="text" id="loginUsername" autocomplete="username" required />
+          </div>
+          <div class="form-row">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="btn-primary full-width" id="loginSubmitBtn">Sign in</button>
+        </form>
+        <p class="auth-switch">No account? <a href="#" id="goRegister">Create one</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register view -->
+  <div class="view" id="view-register" hidden>
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <h1 class="auth-app-name">Expense Tracker</h1>
+        <h2 class="auth-title">Create account</h2>
+        <div class="auth-error" id="registerError" hidden></div>
+        <form id="registerForm" novalidate>
+          <div class="form-row">
+            <label for="regUsername">Username</label>
+            <input type="text" id="regUsername" autocomplete="username" required
+              minlength="3" />
+          </div>
+          <div class="form-row">
+            <label for="regEmail">Email</label>
+            <input type="email" id="regEmail" autocomplete="email" required />
+          </div>
+          <div class="form-row">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" autocomplete="new-password" required
+              minlength="6" />
+          </div>
+          <div class="form-row">
+            <label for="regConfirm">Confirm password</label>
+            <input type="password" id="regConfirm" autocomplete="new-password" required />
+          </div>
+          <button type="submit" class="btn-primary full-width" id="registerSubmitBtn">Create account</button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="#" id="goLogin">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app view -->
+  <div class="view" id="view-app" hidden>
+    <main class="app-shell">
+
+      <!-- summary bar -->
+      <section class="panel" id="summaryPanel" aria-label="Spending summary">
+        <div class="summary-item">Total: <span id="totalAmount">$0.00</span></div>
+        <div class="summary-item">Count: <span id="totalCount">0</span></div>
+      </section>
+
+      <!-- add / edit form -->
+      <section class="panel" aria-label="Expense form">
+        <form id="expenseForm">
+          <input type="hidden" id="expenseId" />
+          <div class="form-row">
+            <label for="title">Title</label>
+            <input type="text" id="title" required maxlength="150" placeholder="Coffee, groceries, etc." />
+          </div>
+          <div class="form-row">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" required min="0.01" step="0.01" placeholder="0.00" />
+          </div>
+          <div class="form-row">
+            <label for="category">Category</label>
+            <select id="category" required>
+              <option value="">Choose</option>
+              <option value="Food">Food</option>
+              <option value="Transport">Transport</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Rent">Rent</option>
+              <option value="Misc">Misc</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="transactionDate">Date</label>
+            <input type="date" id="transactionDate" required min="2000-01-01" max="2099-12-31" />
+          </div>
+          <div class="form-row">
+            <label for="notes">Notes</label>
+            <textarea id="notes" rows="2" maxlength="350" placeholder="Optional details"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" id="submitButton">Add Expense</button>
+            <button type="button" id="resetButton" class="secondary">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- expense list -->
+      <section class="panel" aria-label="Expense list">
+        <h2 class="panel-title">Logs</h2>
+        <div class="table-actions">
+          <input type="text" id="filterInput" placeholder="Filter by title or category"
+            aria-label="Filter expenses" />
+        </div>
+        <div class="table-wrap" aria-live="polite" aria-atomic="true">
+          <table id="expenseTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- insights panel -->
+      <section class="panel" aria-label="Spending insights">
+        <h2 class="panel-title">Insights</h2>
+        <div class="insights-grid">
+          <div>
+            <h3 class="insight-heading">By Category</h3>
+            <div id="categoryList"></div>
+          </div>
+          <div>
+            <h3 class="insight-heading">Monthly Trend</h3>
+            <div id="monthlyList"></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="apiError" class="error" hidden></div>
+    </main>
+  </div>
+
+  <!-- Admin view -->
+  <div class="view" id="view-admin" hidden>
+    <main class="app-shell">
+      <h2 class="admin-heading">Admin Panel</h2>
+
+      <div class="admin-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="users" role="tab" aria-selected="true">Users</button>
+        <button class="tab-btn" data-tab="activities" role="tab" aria-selected="false">Activity Log</button>
+      </div>
+
+      <!-- Users tab -->
+      <section class="panel" id="adminTabUsers" aria-label="All users">
+        <h3 class="panel-title">All Users</h3>
+        <div class="table-wrap">
+          <table id="usersTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="admin-error" id="usersError" hidden></div>
+      </section>
+
+      <!-- Activity log tab -->
+      <section class="panel" id="adminTabActivities" aria-label="Activity log" hidden>
+        <div class="panel-header">
+          <h3 class="panel-title" style="margin:0">Activity Log</h3>
+          <button class="btn-danger-sm" id="clearActivitiesBtn">Clear all</button>
+        </div>
+        <div class="table-wrap" style="margin-top:0.75rem">
+          <table id="activitiesTable">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="admin-error" id="activitiesError" hidden></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- global success toast -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
