@@ -514,7 +514,7 @@ function renderUsers() {
 }
 
 function userRowHtml(user) {
-  const joined = new Date(user.created_at).toLocaleDateString();
+  const joined = new Date(user.created_at).toLocaleDateString('en-GB');
   return `
     <td>${user.id}</td>
     <td>${escapeHtml(user.username)}</td>
@@ -540,7 +540,7 @@ function userEditRowHtml(user) {
         <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>admin</option>
       </select>
     </td>
-    <td>${new Date(user.created_at).toLocaleDateString()}</td>
+    <td>${new Date(user.created_at).toLocaleDateString('en-GB')}</td>
     <td>
       <button class="action-btn" data-action="save-user" data-id="${user.id}">Save</button>
       <button class="action-btn secondary" data-action="cancel-user" data-id="${user.id}">Cancel</button>

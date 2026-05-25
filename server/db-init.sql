@@ -34,7 +34,7 @@ CREATE TABLE `expenses` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   CONSTRAINT `expenses_chk_1` CHECK ((`amount` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-INSERT INTO `expenses` VALUES (8,NULL,'Coffee',7.50,'Food','2020-02-10','Expensive','2026-04-21 08:26:41','2026-04-21 08:26:41'),(9,NULL,'Fish',20.00,'Food','2025-02-21',NULL,'2026-04-21 08:30:56','2026-04-21 08:30:56'),(11,NULL,'hello',3.00,'Food','1999-11-11',NULL,'2026-04-21 09:01:22','2026-04-21 09:01:22'),(12,2,'Coffee',2.00,'Food','2027-02-12',NULL,'2026-05-24 09:08:30','2026-05-24 09:08:30'),(13,6,'Coffee',8.00,'Food','2026-05-12',NULL,'2026-05-24 13:20:48','2026-05-24 13:20:48');
+INSERT INTO `expenses` VALUES (8,NULL,'Coffee',7.50,'Food','2020-02-10','Expensive','2026-04-21 08:26:41','2026-04-21 08:26:41'),(9,NULL,'Fish',20.00,'Food','2025-02-21',NULL,'2026-04-21 08:30:56','2026-04-21 08:30:56'),(11,NULL,'hello',3.00,'Food','1999-11-11',NULL,'2026-04-21 09:01:22','2026-04-21 09:01:22'),(12,2,'Coffee',2.00,'Food','2027-02-12',NULL,'2026-05-24 09:08:30','2026-05-24 09:08:30'),(13,6,'Coffee',8.00,'Food','2026-05-12',NULL,'2026-05-24 13:20:48','2026-05-24 13:20:48'),(15,6,'carrots',4.00,'Food','2025-05-12',NULL,'2026-05-25 08:41:15','2026-05-25 08:41:15'),(16,6,'Pokemon Emerald',5.00,'Entertainment','2026-02-16',NULL,'2026-05-25 08:42:08','2026-05-25 08:42:08'),(17,6,'test',10.00,'Misc','2040-02-12','test test','2026-05-25 08:43:00','2026-05-25 08:43:00');
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `user_activities` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_activities_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `user_activities` (
 
 LOCK TABLES `user_activities` WRITE;
 /*!40000 ALTER TABLE `user_activities` DISABLE KEYS */;
-INSERT INTO `user_activities` VALUES (5,1,'login',NULL,'2026-05-24 09:08:52'),(6,1,'delete_user','Deleted user #2','2026-05-24 10:17:55'),(7,1,'logout',NULL,'2026-05-24 10:17:58'),(8,3,'register','New account: brendan','2026-05-24 10:18:14'),(9,3,'login',NULL,'2026-05-24 10:18:23'),(10,3,'logout',NULL,'2026-05-24 12:00:31'),(11,1,'login',NULL,'2026-05-24 12:00:37'),(12,1,'update_user','Updated user #3 (role → admin)','2026-05-24 12:00:43'),(13,1,'logout',NULL,'2026-05-24 12:00:44'),(17,3,'login',NULL,'2026-05-24 12:07:25'),(18,3,'logout',NULL,'2026-05-24 12:12:18'),(22,1,'login',NULL,'2026-05-24 12:13:08'),(23,1,'delete_user','Deleted user #5','2026-05-24 12:13:22'),(24,1,'logout',NULL,'2026-05-24 13:14:15'),(25,1,'login',NULL,'2026-05-24 13:14:27'),(26,1,'delete_user','Deleted user #4','2026-05-24 13:14:32'),(27,1,'logout',NULL,'2026-05-24 13:19:38'),(28,6,'register','New account: ben','2026-05-24 13:20:11'),(29,6,'login',NULL,'2026-05-24 13:20:16'),(30,6,'create_expense','\"Coffee\" — Food','2026-05-24 13:20:48'),(31,6,'create_expense','\"Carrots\" — Food','2026-05-24 13:21:26'),(32,6,'delete_expense','Deleted \"Carrots\"','2026-05-24 13:26:59');
+INSERT INTO `user_activities` VALUES (1,1,'logout',NULL,'2026-05-24 14:04:42'),(2,1,'login',NULL,'2026-05-24 14:05:12'),(3,6,'login',NULL,'2026-05-25 08:40:22'),(4,6,'create_expense','\"carrots\" — Food','2026-05-25 08:41:15'),(5,6,'create_expense','\"Pokemon Emerald\" — Entertainment','2026-05-25 08:42:08'),(6,6,'create_expense','\"test\" — Misc','2026-05-25 08:43:00'),(7,6,'logout',NULL,'2026-05-25 08:43:02'),(8,1,'login',NULL,'2026-05-25 08:43:08'),(9,1,'logout',NULL,'2026-05-25 08:44:05'),(11,1,'login',NULL,'2026-05-25 08:45:00'),(12,1,'delete_user','Deleted user #9','2026-05-25 08:45:10');
 /*!40000 ALTER TABLE `user_activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +102,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin@example.com','$2b$12$nyAxPJXLa9UyC756RK7yOuGNHh2wXTSr1KkvOfRVvKuUOd8ogdqd.','admin','2026-05-24 06:55:48'),(3,'brendan','brendanzhuynh@gmail.com','$2b$12$M/C3SV3vV33ahskEvbgwfug0TmbzphBBK.t1PrBWEqm/iHM71N3Da','admin','2026-05-24 10:18:14'),(6,'ben','brendan','$2b$12$O.cGQhhDUmZxEOamBzujuuDvt9OzCu/6IpPTMmN7itmWCpkfBZfHm','user','2026-05-24 13:20:11');
+INSERT INTO `users` VALUES (1,'admin','admin@gmail.com','$2b$12$nyAxPJXLa9UyC756RK7yOuGNHh2wXTSr1KkvOfRVvKuUOd8ogdqd.','admin','2026-05-14 23:21:00'),(3,'brendan','brendanzhuynh@gmail.com','$2b$12$M/C3SV3vV33ahskEvbgwfug0TmbzphBBK.t1PrBWEqm/iHM71N3Da','admin','2026-05-15 01:47:00'),(6,'ben','ben@gmail.com','$2b$12$O.cGQhhDUmZxEOamBzujuuDvt9OzCu/6IpPTMmN7itmWCpkfBZfHm','user','2026-05-15 04:03:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -115,4 +115,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-24 23:29:26
+-- Dump completed on 2026-05-25 18:45:29
